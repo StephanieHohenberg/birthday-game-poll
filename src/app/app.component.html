@@ -1,3 +1,16 @@
 <mat-toolbar color="primary">
   <span class="center">{{"GAME_NAME" | translate }}</span>
 </mat-toolbar>
+
+<div class="center">
+  <span *ngFor="let category of categories; let i = index">
+    <button type="button" class="btn btn-sm btn-outline-light ml-2 active"
+            [ngStyle]="hovered === i || i == selectedCategoryIndex ? {'background-color': category.color, 'border-color': category.color, 'color': 'white'}
+                                        : {'background-color': 'transparent', 'border-color': category.color, 'color': category.color}"
+            (mouseover)="hovered = i" (mouseout)="hovered = -1" (click)="selectedCategoryIndex = i"
+            >
+      {{category.name | translate}}
+    </button>
+  </span>
+</div>
+

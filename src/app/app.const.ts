@@ -1,4 +1,8 @@
 export const CATEGORIES = [
-  'SOCIAL_DRINKING', 'INTERACTIVE_CHALLENGES', 'GAMES', 'ICEBREAKER', 'TOPICS'
+ { name: 'SOCIAL_DRINKING', color: 'red'} ,
+ { name: 'INTERACTIVE_CHALLENGES', color: 'orange'},
+ { name: 'GAMES', color: 'blue'},
+ { name: 'ICEBREAKER', color: 'black'},
+ { name: 'TOPICS', color: 'green'}
 ];
 

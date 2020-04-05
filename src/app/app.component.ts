@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
+import {CATEGORIES} from './app.const';
 
 @Component({
   selector: 'app-root',
@@ -7,10 +8,13 @@ import {TranslateService} from '@ngx-translate/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  public currentLang = 'en';
+
+  private currentLang = 'en';
+  public categories = CATEGORIES;
+  public selectedCategoryIndex = 0;
+  public hovered = -1;
 
   constructor(private translate: TranslateService) {
     translate.setDefaultLang(this.currentLang);
   }
-
 }

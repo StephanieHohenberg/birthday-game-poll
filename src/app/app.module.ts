@@ -8,6 +8,8 @@ import {FormsModule} from '@angular/forms';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {MatButtonModule} from '@angular/material/button';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
@@ -30,8 +32,11 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
+    // Bootstrap Modules
+    NgbModule,
     // Angular Material Modules:
     MatToolbarModule,
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
