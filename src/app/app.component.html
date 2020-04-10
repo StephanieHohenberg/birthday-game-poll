@@ -35,7 +35,8 @@
 
     <div class="send-button">
       <button (click)="sendIdea(input.value)"
-              [class.spinner]="isLoading" [disabled]="isLoading"
+              [class.spinner]="isLoading"
+              [disabled]="isLoading || input.value.length === 0"
               color="accent"
               mat-flat-button type="button">
         <mat-icon class="icon-display">send</mat-icon>

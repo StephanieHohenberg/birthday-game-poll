@@ -3,17 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false,
-  firebase: {
-    apiKey: 'AIzaSyB1YL1ExpgpC-JjnE7CMlNojNQbd2FCnqw',
-    authDomain: 'gamepoll-fe033.firebaseapp.com',
-    databaseURL: 'https://gamepoll-fe033.firebaseio.com',
-    projectId: 'gamepoll-fe033',
-    storageBucket: 'gamepoll-fe033.appspot.com',
-    messagingSenderId: '1013785347488',
-    appId: '1:1013785347488:web:d5246fb92a16750f9390c5',
-    measurementId: 'G-3W7X7TH6KZ'
-  }
+  production: false
 };
 
 /*
