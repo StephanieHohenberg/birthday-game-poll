@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "gamepoll-fe033": {
+      "hosting": {
+        "GamePoll": [
+          "gamepoll-fe033"
+        ]
+      }
+    }
+  }
+}
