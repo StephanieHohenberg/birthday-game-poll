@@ -1,4 +1,21 @@
-button {
+.buttons > button {
   margin: 5px;
   margin-top: 10px;
+}
+
+.send-button {
+  float: right;
+}
+
+.outer {
+  width: 40%;
+  margin: 10px;
+}
+
+mat-form-field {
+  width: 100% !important;
+}
+
+.icon-display {
+  transform: scale(0.75);
 }

@@ -2,15 +2,36 @@
   <span class="center">{{"GAME_NAME" | translate }}</span>
 </mat-toolbar>
 
-<div class="center">
-  <span *ngFor="let category of categories; let i = index">
-    <button type="button" class="btn btn-sm btn-outline-light ml-2 active"
-            [ngStyle]="hovered === i || i == selectedCategoryIndex ? {'background-color': category.color, 'border-color': category.color, 'color': 'white'}
-                                        : {'background-color': 'transparent', 'border-color': category.color, 'color': category.color}"
-            (mouseover)="hovered = i" (mouseout)="hovered = -1" (click)="selectedCategoryIndex = i"
-            >
-      {{category.name | translate}}
-    </button>
-  </span>
-</div>
+<div class="outer center">
 
+  <div class="buttons center">
+    <span *ngFor="let category of categories; let i = index">
+      <button (click)="selectedCategoryIndex = i" (mouseout)="hovered = -1"
+              (mouseover)="hovered = i"
+              [ngStyle]="hovered === i || i == selectedCategoryIndex ? {'background-color': category.color, 'border-color': category.color, 'color': 'white'}
+                                          : {'background-color': 'transparent', 'border-color': category.color, 'color': category.color}"
+              class="btn btn-sm btn-outline-light ml-2 active" matRipple type="button"
+      >
+        {{category.name | translate}}
+      </button>
+    </span>
+  </div>
+
+  <div class="input center">
+    <form>
+      <mat-form-field>
+        <mat-label>{{"FIELD_LABEL" | translate}}</mat-label>
+        <textarea #input matInput placeholder="..."></textarea>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <div class="send-button">
+    <button (click)="sendIdea(input.value)" color="accent" mat-flat-button
+            type="button">
+      <mat-icon class="icon-display">send</mat-icon>
+      send
+    </button>
+  </div>
+
+</div>

@@ -1,8 +1,9 @@
 {
   "GAME_NAME": "Play Hard N Stay Home",
-  "SOCIAL_DRINKING":  "Social Drinking",
-  "INTERACTIVE_CHALLENGES":  "Interactive Challenges",
-  "GAMES":  "Fun Games",
-  "ICEBREAKER":  "Icebreaker",
-  "TOPICS": "Game Break Talk Topic Suggestion"
+  "SOCIAL_DRINKING": "Social Drinking",
+  "INTERACTIVE_CHALLENGES": "Interactive Challenges",
+  "GAMES": "Fun Games",
+  "ICEBREAKER": "Icebreaker",
+  "TOPICS": "Game Break Talk Topic Suggestion",
+  "FIELD_LABEL": "What is your idea?"
 }
