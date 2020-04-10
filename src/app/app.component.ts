@@ -1,9 +1,10 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {CATEGORIES} from './app.const';
-import {IdeaHttpService, Rule} from './idea-http.service';
+import {IdeaHttpService} from './services/idea-http.service';
 import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {delay, takeUntil} from 'rxjs/operators';
+import {Rule} from './models/rule.model';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public categories = CATEGORIES;
   public selectedCategoryIndex = 0;
   public hovered = -1;
+  public isLoading = false;
 
   constructor(private translate: TranslateService, private ideaService: IdeaHttpService) {
   }
@@ -40,6 +42,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
   public sendIdea(idea: string): void {
-    this.ideaService.addIdea(this.selectedCategoryIndex, idea);
+    this.isLoading = true;
+    this.ideaService.addIdea(this.selectedCategoryIndex, idea)
+      .pipe(delay(800), takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.isLoading = false;
+      });
   }
 }

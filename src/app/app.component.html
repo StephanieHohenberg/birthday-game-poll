@@ -27,8 +27,10 @@
   </div>
 
   <div class="send-button">
-    <button (click)="sendIdea(input.value)" color="accent" mat-flat-button
-            type="button">
+    <button (click)="sendIdea(input.value)"
+            [class.spinner]="isLoading" [disabled]="isLoading"
+            color="accent"
+            mat-flat-button type="button">
       <mat-icon class="icon-display">send</mat-icon>
       send
     </button>
