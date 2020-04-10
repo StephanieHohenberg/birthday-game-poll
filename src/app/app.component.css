@@ -1,25 +1,25 @@
-.buttons > button {
+.buttons > span > button {
   margin: 5px;
   margin-top: 10px;
 }
 
-.send-button {
-  float: right;
-}
-
-.outer {
-  width: 40%;
+.rule-blocker {
   margin: 10px;
+  color: darkgrey;
+  font-size: 14px;
 }
 
 mat-form-field {
   width: 100% !important;
 }
 
+.send-button {
+  float: right;
+}
+
 .icon-display {
   transform: scale(0.75);
 }
-
 
 @keyframes spinner {
   to {

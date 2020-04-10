@@ -5,3 +5,5 @@ export const CATEGORIES = [
   {name: 'ICEBREAKER', color: 'green', rules: []}
 ];
 
+export const RULE_CHANGE_SECS = 5000;
+export const SEND_BUTTON_DELAY_SECS = 800;
