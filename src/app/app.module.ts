@@ -6,7 +6,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateLoader, TranslateModule, TranslatePipe} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {MatButtonModule} from '@angular/material/button';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -18,6 +18,19 @@ import {AngularFireModule} from '@angular/fire';
 import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {environment} from '../environments/environment';
+import {RouletteWheelComponent} from './components/game/roulette-wheel/roulette-wheel.component';
+import {PollFormComponent} from './components/poll-form/poll-form.component';
+import {GameComponent} from './components/game/game.component';
+import {ROUTES_CONFIG} from './app.routes';
+import {RouterModule} from '@angular/router';
+import {GameEventsConsoleComponent} from './components/game/game-events-console/game-events-console.component';
+import {RegistrationDialogComponent} from './components/registration-dialog/registration-dialog.component';
+import {GameSessionService} from './services/game-session.service';
+import {IdeaHttpService} from './services/idea-http.service';
+import {PartyAnimalService} from './services/party-animal.service';
+import {MatDialogModule} from '@angular/material/dialog';
+import {CardDeskComponent} from './components/game/card-desk/card-desk.component';
+import {DisplayCardDialogComponent} from './components/display-card-dialog/display-card-dialog.component';
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
@@ -26,13 +39,21 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RouletteWheelComponent,
+    PollFormComponent,
+    GameComponent,
+    GameEventsConsoleComponent,
+    RegistrationDialogComponent,
+    CardDeskComponent,
+    DisplayCardDialogComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpClientModule,
+    RouterModule.forRoot(ROUTES_CONFIG),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -53,8 +74,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatInputModule,
     MatIconModule,
     MatRippleModule,
+    MatDialogModule,
   ],
-  providers: [],
+  providers: [GameSessionService, IdeaHttpService, PartyAnimalService, TranslatePipe],
+  entryComponents: [RegistrationDialogComponent, DisplayCardDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

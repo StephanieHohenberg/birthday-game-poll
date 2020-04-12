@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>{{"TITLE_GREET" | translate}}</h1>
+<div mat-dialog-content>
+  <p>{{"TITLE_ASK_NAME" | translate}}</p>
+  <mat-form-field>
+    <mat-label>{{"FIELD_LABEL_NAME" | translate}}</mat-label>
+    <input #input matInput>
+  </mat-form-field>
+</div>
+<div class="right" mat-dialog-actions>
+  <button [disabled]="input.value.length === 0"
+          [mat-dialog-close]="input.value"
+          cdkFocusInitial
+          mat-button>
+    {{"BUTTON_LABEL_SAVE" | translate}}
+  </button>
+</div>

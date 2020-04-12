@@ -1,0 +1,8 @@
+.buttons > span > button {
+  margin: 5px;
+  margin-top: 10px;
+}
+
+mat-form-field {
+  width: 100% !important;
+}

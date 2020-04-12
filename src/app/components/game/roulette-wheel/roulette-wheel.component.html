@@ -1,0 +1,18 @@
+<div class="row">
+  <div *ngFor="let name of partyAnimals; let i = index"
+       [ngStyle]="activeIndex === i ? {'background-color': getColorForIndex(i), 'border-color': getColorForIndex(i), 'color': 'white'}
+                                    : {'background-color': 'transparent', 'border-color': getColorForIndex(i), 'color': getColorForIndex(i)}"
+       class="btn btn-sm btn-outline-light ml-2 active user-tile"
+  >
+    {{name}}
+  </div>
+</div>
+
+<div *ngIf="isGameMaster" class="row right">
+  <button (click)="startRandomizerAsAdmin()" [class.spinner]="isRunning"
+          [disabled]="isRunning"
+          color="accent" mat-flat-button type="button">
+    <mat-icon class="icon-display">send</mat-icon>
+    {{"BUTTON_LABEL_START" | translate}}
+  </button>
+</div>

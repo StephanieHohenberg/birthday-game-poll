@@ -1,0 +1,41 @@
+<div class="outer">
+  <div class="top">
+    <div class="buttons center">
+      <span *ngFor="let category of categories; let i = index">
+        <button (click)="selectedCategoryIndex = i;" (mouseout)="hovered = -1" (mouseover)="hovered = i"
+                [ngStyle]="hovered === i || i == selectedCategoryIndex ? {'background-color': category.color, 'border-color': category.color, 'color': 'white'}
+                                            : {'background-color': 'transparent', 'border-color': category.color, 'color': category.color}"
+                class="btn btn-sm btn-outline-light ml-2 active" matRipple type="button"
+        >
+          {{category.name | translate}}
+        </button>
+      </span>
+    </div>
+
+    <div class="console">
+      <p *ngFor="let idea of categories[selectedCategoryIndex].ideas">
+        <i>{{idea.text}}</i>
+      </p>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="input">
+      <form>
+        <mat-form-field>
+          <mat-label>{{"FIELD_LABEL_POLL" | translate}}</mat-label>
+          <textarea #input matInput placeholder="..."></textarea>
+        </mat-form-field>
+      </form>
+    </div>
+
+    <button (click)="sendIdea(input.value); input.value = ''"
+            [class.spinner]="isLoading"
+            [disabled]="isLoading || input.value.length === 0"
+            color="accent"
+            mat-flat-button type="button">
+      <mat-icon class="icon-display">{{"BUTTON_LABEL_SEND" | translate}}</mat-icon>
+      send
+    </button>
+  </div>
+</div>

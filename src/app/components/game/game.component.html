@@ -1,0 +1,16 @@
+<div class="outer">
+  <div class="top">
+    <app-roulette-wheel
+      [isGameMaster]="partyAnimalService.isLoggedInUserGameMaster()"
+      [partyAnimals]="partyAnimals">
+    </app-roulette-wheel>
+    <app-game-events-console
+      [categories]="categories"
+      [partyAnimals]="partyAnimals">
+    </app-game-events-console>
+    <app-card-desk
+      [categories]="categories"
+      [myIndex]="loggedInUserIndex">
+    </app-card-desk>
+  </div>
+</div>

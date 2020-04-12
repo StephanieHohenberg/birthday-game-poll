@@ -1,0 +1,43 @@
+.row {
+  width: 100%;
+  align-self: center;
+}
+
+.col {
+  float: left;
+  text-align: center;
+}
+
+@media (min-width: 601px) {
+  .col {
+    width: 171.5px;
+    min-height: 244px;
+  }
+
+  .back {
+    width: 171.5px;
+    height: 244px;
+    background-size: 171.5px 244px;
+  }
+
+  .card-title {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 600px) {
+  .col {
+    width: 86px;
+    min-height: 122px;
+  }
+
+  .back {
+    width: 86px;
+    height: 122px;
+    background-size: 86px 122px;
+  }
+
+  .card-title {
+    visibility: hidden;
+  }
+}

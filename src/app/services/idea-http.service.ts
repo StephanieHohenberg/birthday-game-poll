@@ -1,25 +1,25 @@
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase, AngularFireList} from '@angular/fire/database';
 import {Observable} from 'rxjs';
-import {Rule} from '../models/rule.model';
+import {Idea} from '../models/rule.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IdeaHttpService {
 
-  public categoriesRefs: AngularFireList<Rule>[] = [];
+  public categoriesRefs: AngularFireList<Idea>[] = [];
 
   constructor(public db: AngularFireDatabase) {
   }
 
-  public addIdea(categoryIndex: number, rule: string): Observable<Rule[]> {
-    this.categoriesRefs[categoryIndex].push({rule});
+  public addIdea(categoryIndex: number, idea: string): Observable<Idea[]> {
+    this.categoriesRefs[categoryIndex].push({text: idea});
     return this.categoriesRefs[categoryIndex].valueChanges();
   }
 
-  public fetchIdeas(category: string): Observable<Rule[]> {
-    const categoryRef: AngularFireList<Rule> = this.db.list<Rule>(category);
+  public fetchIdeas(category: string): Observable<Idea[]> {
+    const categoryRef: AngularFireList<Idea> = this.db.list<Idea>(category);
     this.categoriesRefs.push(categoryRef);
     return categoryRef.valueChanges();
   }

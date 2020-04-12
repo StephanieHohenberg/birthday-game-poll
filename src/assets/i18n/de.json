@@ -1,9 +1,19 @@
 {
-  "GAME_NAME": "Play Hard N Stay Home",
+  "TILE_GAME_NAME": "Play Hard N Stay Home",
+  "TITLE_GREET": "Hi.",
+  "TITLE_ASK_NAME": "Wie lautet dein Spielname?",
+  "TITLE_PICK_CARD": "Ziehe eine Karte:",
+  "FIELD_LABEL_NAME": "dein Name",
+  "FIELD_LABEL_POLL": "Was ist dein Vorschlag?",
+  "BUTTON_LABEL_SEND": "senden",
+  "BUTTON_LABEL_START": "starten",
+  "BUTTON_LABEL_SAVE": "speichern",
   "SOCIAL_DRINKING": "Soziales Trinken",
   "INTERACTIVE_CHALLENGES": "Interaktive Herausforderungen",
   "GAMES": "Lustige Spiele",
   "ICEBREAKER": "Icebreaker",
   "TOPICS": "Spielpause: Themenvorschlag",
-  "FIELD_LABEL": "Was ist dein Vorschlag?"
+  "EVENT_RANDOMIZER_START": "Der Randomizer wurde gestartet.",
+  "EVENT_RANDOMIZER_STOP": "Der Randomizer wurde gestoppt und {{name}} wurd ausgewaehlt.",
+  "EVENT_CARD_PICKED": "{{name}} hat eine Karte gezogen: {{rule}}"
 }
