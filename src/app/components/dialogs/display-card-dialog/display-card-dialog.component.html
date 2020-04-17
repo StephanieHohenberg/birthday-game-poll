@@ -1,0 +1,8 @@
+<div mat-dialog-content>
+  <div [style.background-image]="getFrontCardImageUrlOfCard()" class="front card">
+        <span [style.color]="displayedCard.color" class="title">
+          {{displayedCard.categoryName | translate}}
+        </span>
+    <p>{{displayedCard.ruleText}}</p>
+  </div>
+</div>

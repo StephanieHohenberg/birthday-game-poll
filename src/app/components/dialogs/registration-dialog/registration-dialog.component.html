@@ -7,10 +7,10 @@
   </mat-form-field>
 </div>
 <div class="right" mat-dialog-actions>
-  <button [disabled]="input.value.length === 0"
+  <button *ngIf="input.value.length > 0"
           [mat-dialog-close]="input.value"
           cdkFocusInitial
           mat-button>
-    {{"BUTTON_LABEL_SAVE" | translate}}
+    {{"BUTTON_LABEL_READY" | translate}}
   </button>
 </div>

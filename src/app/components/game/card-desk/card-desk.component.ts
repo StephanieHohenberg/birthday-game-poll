@@ -4,8 +4,11 @@ import {GameEvent, RandomizerEvent} from '../../../models/event.model';
 import {GameSessionService} from '../../../services/game-session.service';
 import {Subject} from 'rxjs';
 import {Card} from '../../../models/rule.model';
-import {CARD_AMOUNT, PATH_IMG_CARD_BACK} from '../../../app.const';
+import {CARD_AMOUNT} from '../../../app.const';
 import {Category} from '../../../models/category.model';
+import {MatDialog} from '@angular/material/dialog';
+import {CardPickerDialogComponent} from '../../dialogs/card-picker-dialog/card-picker-dialog.component';
+import {DisplayCardDialogComponent} from '../../dialogs/display-card-dialog/display-card-dialog.component';
 
 @Component({
   selector: 'app-card-desk',
@@ -16,11 +19,10 @@ export class CardDeskComponent implements OnInit, OnDestroy {
 
   @Input() public myIndex: number;
   @Input() public categories: Category[] = [];
-  public displayedCards: Card[] = [];
-  public selectedCardIndex = -1;
   private unsubscribe$ = new Subject();
+  private lastTurnUserIndex: number;
 
-  constructor(private gameSessionService: GameSessionService) {
+  constructor(private gameSessionService: GameSessionService, public dialog: MatDialog) {
   }
 
   public ngOnInit(): void {
@@ -33,32 +35,17 @@ export class CardDeskComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  public selectCard(index: number) {
-    if (this.selectedCardIndex < 0) {
-      this.selectedCardIndex = index;
-      const selectedCard = this.displayedCards[index];
-      this.gameSessionService.createGameEventNotification({categoryIndex: selectedCard.categoryIndex, ruleIndex: selectedCard.ruleIndex});
-    }
-  }
-
-  public getCardBackUrlByColor(color: string): string {
-    return `url(${PATH_IMG_CARD_BACK}${color}.png)`;
-  }
-
   private fetchRandomizerEvents(): void {
     this.gameSessionService.fetchRandomizerEvents()
       .pipe(skip(1), takeUntil(this.unsubscribe$), map((r: RandomizerEvent) => r.userIndex))
       .subscribe((selectedIndex: number) => {
-        console.log('myIndex:' + this.myIndex);
-        console.log('selectedIndex: ' + selectedIndex);
+        this.lastTurnUserIndex = selectedIndex;
+        this.dialog.closeAll();
         if (selectedIndex > -1) {
           if (selectedIndex === this.myIndex) {
-            this.displayRandomCards();
-          } else {
-            this.displayedCards = [];
-            this.selectedCardIndex = -1;
+            const cards = this.shuffleCards();
+            this.openCardPickerDialog(cards);
           }
-          return;
         }
       });
   }
@@ -70,22 +57,59 @@ export class CardDeskComponent implements OnInit, OnDestroy {
         if (gameEvent.categoryIndex > -1
           && gameEvent.ruleIndex > -1
           && gameEvent.categoryIndex < this.categories.length
-          && gameEvent.ruleIndex < this.categories[gameEvent.categoryIndex].ideas.length
-          && this.selectedCardIndex < 0) {
-          this.displayedCards = [];
-          this.displayedCards.push({categoryIndex: gameEvent.categoryIndex, ruleIndex: gameEvent.ruleIndex});
-          this.selectedCardIndex = 0;
+          && gameEvent.ruleIndex < this.categories[gameEvent.categoryIndex].ideas.length) {
+          const card = this.mapIndicesToCard(gameEvent.categoryIndex, gameEvent.ruleIndex);
+          this.openCardPickedDialog(card);
         }
       });
   }
 
-  private displayRandomCards(): void {
-    this.displayedCards = [];
-    this.selectedCardIndex = -1;
+  private shuffleCards(): Card[] {
+    const cards = [];
     for (let i = 1; i <= CARD_AMOUNT; i++) {
       const categoryIndex = Math.floor(Math.random() * this.categories.length);
       const ruleIndex = Math.floor(Math.random() * this.categories[categoryIndex].ideas.length);
-      this.displayedCards.push({categoryIndex, ruleIndex});
+      cards.push(this.mapIndicesToCard(categoryIndex, ruleIndex));
     }
+    return cards;
   }
+
+  private mapIndicesToCard(categoryIndex: number, ruleIndex: number): Card {
+    return {
+      categoryIndex,
+      ruleIndex,
+      color: this.categories[categoryIndex].color,
+      categoryName: this.categories[categoryIndex].name,
+      ruleText: this.categories[categoryIndex].ideas[ruleIndex].text
+    };
+  }
+
+  private openCardPickedDialog(card: Card): void {
+    const dialogRef = this.dialog.open(DisplayCardDialogComponent, {
+      width: '172px',
+      panelClass: 'custom-dialog-container',
+      data: {card}
+    });
+  }
+
+  private openCardPickerDialog(cards: Card[]): void {
+    const dialogRef = this.dialog.open(CardPickerDialogComponent,
+      {
+        width: '400px', data: {cards}
+      });
+
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((selectedCard: Card) => {
+        if (selectedCard === undefined) {
+          this.openCardPickerDialog(cards); // TODO oder choose random?
+        } else {
+          this.gameSessionService.createGameEventNotification({
+            categoryIndex: selectedCard.categoryIndex,
+            ruleIndex: selectedCard.ruleIndex
+          });
+        }
+      });
+  }
+
 }

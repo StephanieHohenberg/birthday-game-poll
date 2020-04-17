@@ -1,4 +1,5 @@
 <div class="row">
+  <h2>{{"TITLE_RANDOMIZER" | translate}}</h2>
   <div *ngFor="let name of partyAnimals; let i = index"
        [ngStyle]="activeIndex === i ? {'background-color': getColorForIndex(i), 'border-color': getColorForIndex(i), 'color': 'white'}
                                     : {'background-color': 'transparent', 'border-color': getColorForIndex(i), 'color': getColorForIndex(i)}"

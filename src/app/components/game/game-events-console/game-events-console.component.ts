@@ -15,9 +15,12 @@ import {Category} from '../../../models/category.model';
 })
 export class GameEventsConsoleComponent implements OnInit, OnDestroy {
 
+  @Input() public isGameMaster: boolean;
   @Input() public partyAnimals: User[] = [];
   @Input() public categories: Category[] = [];
   public eventsMessages: string[] = [];
+  public displayedText: string;
+  public isLoading = false;
   private userOfLastTurn: User;
   private unsubscribe$ = new Subject();
 
@@ -46,14 +49,14 @@ export class GameEventsConsoleComponent implements OnInit, OnDestroy {
       .subscribe((selectedIndex: number) => {
         if (selectedIndex < 0) {
           this.userOfLastTurn = undefined;
-          const text = this.translate.transform(EVENT_RANDOMIZER_START);
-          this.eventsMessages.push(`> "${text}"`);
+          this.displayedText = this.translate.transform(EVENT_RANDOMIZER_START);
         } else {
+          this.isLoading = true;
           this.userOfLastTurn = this.partyAnimals[selectedIndex];
-          const text = this.translate.transform(EVENT_RANDOMIZER_STOP, {name: this.partyAnimals[selectedIndex]});
-          this.eventsMessages.push(`> "${text}"`);
+          this.displayedText = this.translate.transform(EVENT_RANDOMIZER_STOP, {name: this.partyAnimals[selectedIndex]});
         }
-        GameEventsConsoleComponent.scrollDown();
+        // this.eventsMessages.push(`> "${this.displayedText}"`);
+        // GameEventsConsoleComponent.scrollDown();
       });
   }
 
@@ -66,8 +69,11 @@ export class GameEventsConsoleComponent implements OnInit, OnDestroy {
           && gameEvent.categoryIndex < this.categories.length
           && gameEvent.ruleIndex < this.categories[gameEvent.categoryIndex].ideas.length) {
           const rule = this.categories[gameEvent.categoryIndex].ideas[gameEvent.ruleIndex];
-          const text = this.translate.transform(EVENT_CARD_PICKED, {name: this.userOfLastTurn, rule: rule.text});
-          this.eventsMessages.push(`>> "${text}"`);
+          this.isLoading = false;
+          this.displayedText = this.translate.transform(EVENT_CARD_PICKED, {name: this.userOfLastTurn, rule: rule.text});
+          // this.eventsMessages.push(`>> "${this.displayedText}"`);
+          // GameEventsConsoleComponent.scrollDown();
+
         }
       });
   }

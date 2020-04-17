@@ -8,6 +8,9 @@ export interface Rule {
 }
 
 export interface Card {
+  color: string;
   categoryIndex: number;
   ruleIndex: number;
+  categoryName: string;
+  ruleText: string;
 }

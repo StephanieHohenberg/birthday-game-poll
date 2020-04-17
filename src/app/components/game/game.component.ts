@@ -3,10 +3,10 @@ import {PartyAnimalService} from '../../services/party-animal.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
-import {RegistrationDialogComponent} from '../registration-dialog/registration-dialog.component';
 import {CATEGORIES} from '../../app.const';
 import {Idea} from '../../models/rule.model';
 import {IdeaHttpService} from '../../services/idea-http.service';
+import {RegistrationDialogComponent} from '../dialogs/registration-dialog/registration-dialog.component';
 
 @Component({
   selector: 'app-game',
@@ -53,7 +53,7 @@ export class GameComponent implements OnInit, OnDestroy {
           this.partyAnimalService.createUser(name)
             .pipe(takeUntil(this.unsubscribe$))
             .subscribe(animals => {
-              if (this.loggedInUserIndex < 0) {
+              if (this.loggedInUserIndex < 0) { // FIXME: index, ID? TODO
                 this.loggedInUserIndex = animals.length - 1;
               }
               this.partyAnimals = animals.map(a => a.name);

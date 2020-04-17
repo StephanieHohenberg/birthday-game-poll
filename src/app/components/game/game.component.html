@@ -1,10 +1,11 @@
 <div class="outer">
-  <div class="top">
+  <div *ngIf="loggedInUserIndex > -1" class="top">
     <app-roulette-wheel
       [isGameMaster]="partyAnimalService.isLoggedInUserGameMaster()"
       [partyAnimals]="partyAnimals">
     </app-roulette-wheel>
     <app-game-events-console
+      [isGameMaster]="partyAnimalService.isLoggedInUserGameMaster()"
       [categories]="categories"
       [partyAnimals]="partyAnimals">
     </app-game-events-console>

@@ -16,5 +16,6 @@ export const EVENT_RANDOMIZER_START = 'EVENT_RANDOMIZER_START';
 export const EVENT_RANDOMIZER_STOP = 'EVENT_RANDOMIZER_STOP';
 export const EVENT_CARD_PICKED = 'EVENT_CARD_PICKED';
 
-export const CARD_AMOUNT = 6;
+export const CARD_AMOUNT = 4;
 export const PATH_IMG_CARD_BACK = './../../../../assets/card_';
+export const PATH_IMG_CARD_FRONT = './../../../../assets/card_front_';

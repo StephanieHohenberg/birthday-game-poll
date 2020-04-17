@@ -1,0 +1,14 @@
+.mat-dialog-container {
+  padding: 0 !important;
+  overflow: hidden;
+  width: 171.5px;
+  height: 244px;
+}
+
+.card {
+  padding: 25px;
+  padding-top: 30px;
+  width: 171.5px;
+  height: 244px;
+  background-size: 171.5px 244px;
+}
