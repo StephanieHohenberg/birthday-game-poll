@@ -6,7 +6,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {MatToolbarModule} from '@angular/material/toolbar';
-import {TranslateLoader, TranslateModule, TranslatePipe} from '@ngx-translate/core';
+import {TranslateLoader, TranslateModule, TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {MatButtonModule} from '@angular/material/button';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
@@ -31,8 +31,12 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {CardDeskComponent} from './components/game/card-desk/card-desk.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {RegistrationDialogComponent} from './components/dialogs/registration-dialog/registration-dialog.component';
-import {CardPickerDialogComponent} from './components/dialogs/card-picker-dialog/card-picker-dialog.component';
 import {DisplayCardDialogComponent} from './components/dialogs/display-card-dialog/display-card-dialog.component';
+import {MatSliderModule} from '@angular/material/slider';
+import {AdminToolsComponent} from './components/game/admin-tools/admin-tools.component';
+import {DrinkingCommandDialogComponent} from './components/dialogs/drinking-command-dialog/drinking-command-dialog.component';
+import {LanguageToggleComponent} from './components/language-toggle/language-toggle.component';
+import {DrinkNotificationDialogComponent} from './components/dialogs/drink-notification-dialog/drink-notification-dialog.component';
 
 // required for AOT compilation
 export function HttpLoaderFactory(http: HttpClient) {
@@ -49,7 +53,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     RegistrationDialogComponent,
     CardDeskComponent,
     DisplayCardDialogComponent,
-    CardPickerDialogComponent
+    DrinkingCommandDialogComponent,
+    AdminToolsComponent,
+    AdminToolsComponent,
+    LanguageToggleComponent,
+    DrinkNotificationDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,9 +87,21 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatRippleModule,
     MatDialogModule,
     MatProgressBarModule,
+    MatSliderModule,
   ],
-  providers: [GameSessionService, IdeaHttpService, PartyAnimalService, TranslatePipe],
-  entryComponents: [RegistrationDialogComponent, DisplayCardDialogComponent, CardPickerDialogComponent],
+  providers: [
+    GameSessionService,
+    IdeaHttpService,
+    PartyAnimalService,
+    TranslateService,
+    TranslatePipe
+  ],
+  entryComponents: [
+    RegistrationDialogComponent,
+    DrinkingCommandDialogComponent,
+    DrinkNotificationDialogComponent,
+    DisplayCardDialogComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

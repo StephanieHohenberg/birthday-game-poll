@@ -5,10 +5,18 @@
     <mat-label>{{"FIELD_LABEL_NAME" | translate}}</mat-label>
     <input #input matInput>
   </mat-form-field>
+
+  <p>&nbsp;</p>
+  <p>{{"TITLE_ASK_DRINKING" | translate}}</p>
+  <mat-slider #slider min="0" max="4" color="accent" [value]="3"></mat-slider>
+  <span class="drinking-label">
+    <i [ngClass]="getIconClass(slider.value)"></i>&nbsp;{{getSliderLabel(slider.value) | translate}}
+  </span>
+
 </div>
 <div class="right" mat-dialog-actions>
   <button *ngIf="input.value.length > 0"
-          [mat-dialog-close]="input.value"
+          [mat-dialog-close]="{name: input.value, isDrinking: slider.value > 0}"
           cdkFocusInitial
           mat-button>
     {{"BUTTON_LABEL_READY" | translate}}

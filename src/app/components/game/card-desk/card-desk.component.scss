@@ -1,0 +1,17 @@
+.row {
+  width: 100%;
+}
+
+.option {
+  padding: 10px;
+  margin: 10px;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .option {
+    padding: 0;
+    margin: 5px;
+  }
+
+}

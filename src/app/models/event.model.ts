@@ -3,6 +3,10 @@ export interface GameEvent {
   ruleIndex: number;
 }
 
+export interface DrinkingEvent {
+  userIDs: string[];
+}
+
 export interface RandomizerEvent {
-  userIndex: number;
+  userId: string;
 }

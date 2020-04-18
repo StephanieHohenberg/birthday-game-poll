@@ -3,10 +3,13 @@ import {PartyAnimalService} from '../../services/party-animal.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
-import {CATEGORIES} from '../../app.const';
-import {Idea} from '../../models/rule.model';
+import {CATEGORIES, COOKIE_KEY} from '../../app.const';
+import {Card, Idea} from '../../models/rule.model';
 import {IdeaHttpService} from '../../services/idea-http.service';
 import {RegistrationDialogComponent} from '../dialogs/registration-dialog/registration-dialog.component';
+import {mapStringToUser, mapUsertoString, User} from '../../models/user.model';
+import {DisplayCardDialogComponent} from '../dialogs/display-card-dialog/display-card-dialog.component';
+import {DrinkingCommandDialogComponent} from '../dialogs/drinking-command-dialog/drinking-command-dialog.component';
 
 @Component({
   selector: 'app-game',
@@ -17,7 +20,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   public categories = CATEGORIES;
   public partyAnimals = [];
-  public loggedInUserIndex = -1;
+  public loggedInUserId;
   private unsubscribe$ = new Subject();
 
   constructor(public partyAnimalService: PartyAnimalService,
@@ -26,7 +29,8 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    if (this.partyAnimalService.isLoggedInUserGameMaster() === undefined) {
+    if (this.partyAnimalService.isLoggedInUserGameMaster() === undefined
+        && !this.userCookieCouldBeFetched()) {
       this.openRegistrationDialog();
     }
   }
@@ -37,29 +41,33 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('window:beforeunload', ['$event'])
-  beforeUnloadHandler(event) {
-    this.partyAnimalService.leaveSession();
+  public beforeUnloadHandler(event): void {
+    if (this.loggedInUserId) {
+      this.partyAnimalService.leaveSession();
+    }
   }
 
   private openRegistrationDialog(): void {
     const dialogRef = this.dialog.open(RegistrationDialogComponent, {width: '250px'});
     dialogRef.afterClosed()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(name => {
-        if (name === undefined) {
+      .subscribe((result: {name, isDrinking}) => {
+        if (result === undefined) {
           this.openRegistrationDialog();
         } else {
+          this.createUserAndFetchOtherUsers(result);
+          this.setCookie(result);
           this.fetchRules();
-          this.partyAnimalService.createUser(name)
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(animals => {
-              if (this.loggedInUserIndex < 0) { // FIXME: index, ID? TODO
-                this.loggedInUserIndex = animals.length - 1;
-              }
-              this.partyAnimals = animals.map(a => a.name);
-            });
-          // TODO: set Cookie
         }
+      });
+  }
+
+  private createUserAndFetchOtherUsers(result: {name, isDrinking}): void {
+    this.partyAnimalService.createUser(result.name, result.isDrinking)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(animals => {
+        this.loggedInUserId = this.partyAnimalService.getIdOfLoggedInUser();
+        this.partyAnimals = [...animals];
       });
   }
 
@@ -68,9 +76,32 @@ export class GameComponent implements OnInit, OnDestroy {
       this.ideaService.fetchIdeas(c.name)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((ideas: Idea[]) => {
-          c.ideas = [...ideas];
-          c.ideas.forEach(idea => idea.text = `"${idea.text}"`);
+          c.ideas = [...ideas].map(idea => ({text: `"${idea.text}"`, isDrinkingRule: idea.isDrinkingRule}));
+          if (!this.partyAnimalService.isLoggedInUserDrinking()) {
+            c.ideas = c.ideas.filter(idea => !idea.isDrinkingRule);
+            if (c.ideas.length === 0) {
+              c.color = 'grey';
+            }
+          }
         });
     }
   }
+
+  private setCookie(result: {name, isDrinking}): void {
+    const userString = mapUsertoString(result);
+    localStorage.setItem(COOKIE_KEY, userString);
+  }
+
+  private userCookieCouldBeFetched(): boolean {
+    const userString = localStorage.getItem(COOKIE_KEY);
+    console.log(userString);
+    if (userString) {
+      this.createUserAndFetchOtherUsers(mapStringToUser(userString));
+      this.fetchRules();
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }

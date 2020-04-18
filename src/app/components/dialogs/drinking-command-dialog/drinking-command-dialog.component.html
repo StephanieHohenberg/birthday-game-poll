@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>{{"TITLE_CHOOSE" | translate}}</h1>
+<div mat-dialog-content class="dialog-content">
+  <p>{{"TITLE_WHO_DRINKS" | translate}}</p>
+
+  <div *ngFor="let animal of partyAnimals; let i = index" mat-ripple
+       [ngClass]="{'disabled-cursor': !animal.isDrinking}"
+       [ngStyle]="(isSelectedPartyAnimal(animal.id) || hovered === i ) && animal.isDrinking? {'background-color': getColorForIndex(i), 'border-color': getColorForIndex(i), 'color': 'white'}
+                                    : {'background-color': 'transparent', 'border-color': getColorForIndex(i), 'color': getColorForIndex(i)}"
+       class="btn btn-sm btn-outline-light ml-2 active user-tile"
+       (click)="selectPartyAnimal(animal); hovered = -1" (mouseenter)="hovered=i" (mouseleave)="hovered=-1"
+  >
+    {{animal.name}}
+  </div>
+
+</div>
+
+<div class="right" mat-dialog-actions>
+  <button [mat-dialog-close]="{partyAnimalIDs: selectedUserIDs}" mat-button>
+    {{"BUTTON_LABEL_CHEERS" | translate}}
+    <i class="fas fa-glass-cheers"></i>
+  </button>
+</div>

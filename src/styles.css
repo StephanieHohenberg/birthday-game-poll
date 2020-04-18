@@ -61,6 +61,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   float: right;
 }
 
+.user-tile {
+  margin-bottom: 10px;
+}
+
 .console {
   display: block;
   overflow-y: scroll;
@@ -69,6 +73,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-size: 10px;
   float: left;
   height: 40%;
+  max-height: 40%;
   width: 100%
 }
 
@@ -97,4 +102,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   border: 2px solid #ffffff;
   border-top-color: #000000;
   animation: spinner .8s linear infinite;
+}
+
+.disabled-cursor {
+  cursor: not-allowed;
 }

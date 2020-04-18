@@ -28,11 +28,6 @@ export class GameEventsConsoleComponent implements OnInit, OnDestroy {
               private translate: TranslatePipe) {
   }
 
-  private static scrollDown(): void {
-    const objDiv = document.getElementById('console');
-    objDiv.scrollTop = objDiv.scrollHeight;
-  }
-
   public ngOnInit(): void {
     this.fetchRandomizerEvents();
     this.fetchGameEvents();
@@ -45,18 +40,17 @@ export class GameEventsConsoleComponent implements OnInit, OnDestroy {
 
   private fetchRandomizerEvents(): void {
     this.gameSessionService.fetchRandomizerEvents()
-      .pipe(skip(1), takeUntil(this.unsubscribe$), map((r: RandomizerEvent) => r.userIndex))
-      .subscribe((selectedIndex: number) => {
+      .pipe(skip(1), takeUntil(this.unsubscribe$), map((r: RandomizerEvent) => r.userId))
+      .subscribe((selectedUserId: string) => {
+        const selectedIndex = this.partyAnimals.findIndex(user => user.id === selectedUserId);
         if (selectedIndex < 0) {
           this.userOfLastTurn = undefined;
           this.displayedText = this.translate.transform(EVENT_RANDOMIZER_START);
         } else {
           this.isLoading = true;
           this.userOfLastTurn = this.partyAnimals[selectedIndex];
-          this.displayedText = this.translate.transform(EVENT_RANDOMIZER_STOP, {name: this.partyAnimals[selectedIndex]});
+          this.displayedText = this.translate.transform(EVENT_RANDOMIZER_STOP, {name: this.partyAnimals[selectedIndex].name});
         }
-        // this.eventsMessages.push(`> "${this.displayedText}"`);
-        // GameEventsConsoleComponent.scrollDown();
       });
   }
 
@@ -70,10 +64,7 @@ export class GameEventsConsoleComponent implements OnInit, OnDestroy {
           && gameEvent.ruleIndex < this.categories[gameEvent.categoryIndex].ideas.length) {
           const rule = this.categories[gameEvent.categoryIndex].ideas[gameEvent.ruleIndex];
           this.isLoading = false;
-          this.displayedText = this.translate.transform(EVENT_CARD_PICKED, {name: this.userOfLastTurn, rule: rule.text});
-          // this.eventsMessages.push(`>> "${this.displayedText}"`);
-          // GameEventsConsoleComponent.scrollDown();
-
+          this.displayedText = this.translate.transform(EVENT_CARD_PICKED, {name: this.userOfLastTurn.name, rule: rule.text});
         }
       });
   }

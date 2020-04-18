@@ -1,0 +1,13 @@
+<div class="row center">
+  <h2 *ngIf="!disabled">{{"TITLE_PICK_CARD" | translate}}</h2>
+  <h3 class="right">{{timer}}</h3>
+  <div *ngFor="let c of categories; let i = index" mat-ripple
+       [ngClass]="{'disabled-cursor':disabled || c.ideas.length == 0}"
+       [ngStyle]="(hovered === i || blinking === i) && !disabled && c.ideas.length > 0? {'background-color': c.color, 'border-color': c.color, 'color': 'white'}
+                                    : {'background-color': 'transparent', 'border-color': c.color, 'color': c.color}"
+       class="option btn btn-sm btn-outline-light ml-2 active user-tile"
+       (click)="onPickCategorizedCard(i, c.ideas)"
+       (mouseenter)="hovered=i; stopBlinking()" (mouseleave)="hovered=-1; startBlinking(i)">
+    {{c.name | translate}}
+  </div>
+</div>

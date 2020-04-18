@@ -1,13 +1,17 @@
-.mat-dialog-container {
+.mat-card-dialog-container, .mat-dialog-container {
   padding: 0 !important;
+  margin: 0 !important;
   overflow: hidden;
-  width: 171.5px;
-  height: 244px;
+}
+
+/deep/ .mat-dialog-content {
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .card {
-  padding: 25px;
-  padding-top: 30px;
+  padding: 30px;
+  margin: 0;
   width: 171.5px;
   height: 244px;
   background-size: 171.5px 244px;

@@ -4,6 +4,8 @@ import {Subject} from 'rxjs';
 import {IdeaHttpService} from '../../services/idea-http.service';
 import {delay, takeUntil} from 'rxjs/operators';
 import {Idea} from '../../models/rule.model';
+import {Router} from '@angular/router';
+import {PartyAnimalService} from '../../services/party-animal.service';
 
 @Component({
   selector: 'app-poll-form',
@@ -18,13 +20,14 @@ export class PollFormComponent implements OnInit, OnDestroy {
   public isLoading = false;
   private unsubscribe$ = new Subject();
 
-  constructor(private ideaService: IdeaHttpService) {
+  constructor(private ideaService: IdeaHttpService,
+              private partyAnimalService: PartyAnimalService,
+              private router: Router) {
   }
 
   public ngOnInit(): void {
-    // TODO: Wegleiten auf Game, wenn GameStatus >= BEREITSGESTARTET - RuleService? GameSessionService
-
     this.fetchIdeas();
+    this.routeToGameIfAlreadyStarted();
   }
 
   public ngOnDestroy(): void {
@@ -41,14 +44,23 @@ export class PollFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  private fetchIdeas() {
+  private fetchIdeas(): void {
     for (const c of this.categories) {
       this.ideaService.fetchIdeas(c.name)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((ideas: Idea[]) => {
-          c.ideas = ideas;
-          c.ideas.forEach(idea => idea.text = `"${idea.text}"`);
+          c.ideas = [...ideas].map(idea => ({text: `"${idea.text}"`, isDrinkingRule: idea.isDrinkingRule}));
         });
     }
+  }
+
+  private routeToGameIfAlreadyStarted(): void {
+    this.partyAnimalService.fetchUsers()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(animals => {
+        if (animals.length > 0) {
+          this.router.navigate(['session']);
+        }
+      });
   }
 }

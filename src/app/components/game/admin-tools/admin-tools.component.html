@@ -1,0 +1,14 @@
+<div class="row" *ngIf="isGameMaster">
+  <div class="right">
+    <button (click)="startRandomizerAsAdmin()" [class.spinner]="isRandomizerRunning"
+            [disabled]="isRandomizerRunning"
+            color="accent" mat-flat-button type="button">
+      <mat-icon class="icon-display">send</mat-icon>
+      {{"BUTTON_LABEL_START" | translate}}
+    </button>
+    &nbsp;
+    <button (click)="openDrinkCommandDialog()" color="primary" mat-flat-button type="button">
+      <i class="fas fa-glass-cheers"></i>
+    </button>
+  </div>
+</div>

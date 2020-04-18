@@ -14,7 +14,7 @@ export class IdeaHttpService {
   }
 
   public addIdea(categoryIndex: number, idea: string): Observable<Idea[]> {
-    this.categoriesRefs[categoryIndex].push({text: idea});
+    this.categoriesRefs[categoryIndex].push({text: idea, isDrinkingRule: false});
     return this.categoriesRefs[categoryIndex].valueChanges();
   }
 

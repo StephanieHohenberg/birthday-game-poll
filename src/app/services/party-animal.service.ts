@@ -4,6 +4,7 @@ import {AngularFireDatabase, AngularFireList} from '@angular/fire/database';
 import {DB_GAME_MASTERS, DB_PARTY_ANIMALS} from '../db.routes';
 import {User} from '../models/user.model';
 import ThenableReference = firebase.database.ThenableReference;
+import * as uuid from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,9 @@ export class PartyAnimalService {
     this.adminsRef = this.db.list<User>(DB_GAME_MASTERS);
   }
 
-  public createUser(name: string): Observable<User[]> {
-    this.loggedInUser = {name};
-    this.loggedInUserRef = this.usersRef.push({name});
+  public createUser(name: string, isDrinking: boolean): Observable<User[]> {
+    this.loggedInUser = {id: uuid.v4(), name, isDrinking};
+    this.loggedInUserRef = this.usersRef.push(this.loggedInUser);
     return this.usersRef.valueChanges();
   }
 
@@ -39,9 +40,11 @@ export class PartyAnimalService {
     return this.loggedInUserRef && this.admins.indexOf(this.loggedInUser.name) > -1;
   }
 
-  private fetchGameMasters(): void {
-    this.adminsRef.valueChanges()
-      .subscribe(admins => this.admins = admins.map(a => a.name));
+  public isLoggedInUserDrinking(): boolean {
+    return this.loggedInUser && this.loggedInUser.isDrinking;
   }
 
+  public getIdOfLoggedInUser(): string {
+    return this.loggedInUser.id;
+  }
 }

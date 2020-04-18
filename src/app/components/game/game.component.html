@@ -1,17 +1,25 @@
 <div class="outer">
-  <div *ngIf="loggedInUserIndex > -1" class="top">
+  <div *ngIf="loggedInUserId" class="top">
     <app-roulette-wheel
       [isGameMaster]="partyAnimalService.isLoggedInUserGameMaster()"
       [partyAnimals]="partyAnimals">
     </app-roulette-wheel>
+    <app-admin-tools
+      [isGameMaster]="partyAnimalService.isLoggedInUserGameMaster()"
+      [myId]="loggedInUserId"
+      [partyAnimals]="partyAnimals">
+    </app-admin-tools>
     <app-game-events-console
       [isGameMaster]="partyAnimalService.isLoggedInUserGameMaster()"
       [categories]="categories"
       [partyAnimals]="partyAnimals">
     </app-game-events-console>
+  </div>
+  <div class="bottom">
     <app-card-desk
       [categories]="categories"
-      [myIndex]="loggedInUserIndex">
+      [myId]="loggedInUserId"
+      [partyAnimals]="partyAnimals">
     </app-card-desk>
   </div>
 </div>

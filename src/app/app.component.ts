@@ -6,14 +6,9 @@ import {TranslateService} from '@ngx-translate/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
-  private currentLang = 'en';
-
-  constructor(private translate: TranslateService) {
+  constructor() {
   }
 
-  public ngOnInit(): void {
-    this.translate.setDefaultLang(this.currentLang);
-  }
 }
