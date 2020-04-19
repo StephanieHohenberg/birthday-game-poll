@@ -17,7 +17,7 @@
 <div class="right" mat-dialog-actions>
   <button *ngIf="input.value.length > 0"
           [mat-dialog-close]="{name: input.value, drinkingIndex: slider.value}"
-          cdkFocusInitial
+          cdkFocusInitial color="primary"
           mat-button>
     {{"BUTTON_LABEL_READY" | translate}}
   </button>

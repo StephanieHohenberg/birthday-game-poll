@@ -23,6 +23,4 @@ export const COOKIE_KEY_NAME = 'StayHome_Name';
 export const COOKIE_KEY_ID = 'StayHome_Id';
 export const COOKIE_KEY_DRINKING = 'StayHome_Drinking';
 
-export const CARD_AMOUNT = 4;
-export const PATH_IMG_CARD_BACK = './../../../../assets/card_';
-export const PATH_IMG_CARD_FRONT = './../../../../assets/card_front_';
+export const PATH_IMG_CARD_FRONT = 'assets/card_front_';
