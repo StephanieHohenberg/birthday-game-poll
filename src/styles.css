@@ -72,8 +72,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: darkgrey;
   font-size: 10px;
   float: left;
-  height: 40%;
-  max-height: 40%;
+  height: 40vh !important;
+  max-height: 40vh !important;
   width: 100%
 }
 

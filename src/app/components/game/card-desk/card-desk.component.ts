@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {map, skip, takeUntil} from 'rxjs/operators';
 import {GameEvent, RandomizerEvent} from '../../../models/event.model';
 import {GameSessionService} from '../../../services/game-session.service';
@@ -131,11 +131,7 @@ export class CardDeskComponent implements OnInit, OnDestroy {
   }
 
   private openCardPickedDialog(card: Card): void {
-    const dialogRef = this.dialog.open(DisplayCardDialogComponent, {
-      width: '172px',
-      height: '244px',
-      data: {card}
-    });
+    const dialogRef = this.dialog.open(DisplayCardDialogComponent, {data: {card}});
   }
 
 }

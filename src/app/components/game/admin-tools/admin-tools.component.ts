@@ -5,8 +5,8 @@ import {User} from '../../../models/user.model';
 import {Subject} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {GameSessionService} from '../../../services/game-session.service';
-import {EVENT_RANDOMIZER_START, EVENT_RANDOMIZER_STOP, RANDOMIZER_SECS} from '../../../app.const';
-import {DrinkingEvent, RandomizerEvent} from '../../../models/event.model';
+import {RANDOMIZER_SECS} from '../../../app.const';
+import {DrinkingEvent} from '../../../models/event.model';
 import {DrinkNotificationDialogComponent} from '../../dialogs/drink-notification-dialog/drink-notification-dialog.component';
 
 @Component({
@@ -49,7 +49,6 @@ export class AdminToolsComponent implements OnInit, OnDestroy {
 
   public openDrinkCommandDialog(): void {
     const dialogRef = this.dialog.open(DrinkingCommandDialogComponent, {
-      panelClass: 'mat-drinking-dialog-container',
       data: {partyAnimals: this.partyAnimals}
     });
     dialogRef.afterClosed()
@@ -67,10 +66,7 @@ export class AdminToolsComponent implements OnInit, OnDestroy {
       .subscribe((userIDs: string[]) => {
 
         if (userIDs.findIndex(id => id === this.myId) > -1) {
-          const dialogRef = this.dialog.open(DrinkNotificationDialogComponent, {
-            panelClass: 'mat-drinking-dialog-container',
-            width: '400px'
-          });
+          const dialogRef = this.dialog.open(DrinkNotificationDialogComponent);
         }
       });
   }

@@ -19,7 +19,9 @@ export const EVENT_RANDOMIZER_START = 'EVENT_RANDOMIZER_START';
 export const EVENT_RANDOMIZER_STOP = 'EVENT_RANDOMIZER_STOP';
 export const EVENT_CARD_PICKED = 'EVENT_CARD_PICKED';
 
-export const COOKIE_KEY = 'StayHomePlayer';
+export const COOKIE_KEY_NAME = 'StayHome_Name';
+export const COOKIE_KEY_ID = 'StayHome_Id';
+export const COOKIE_KEY_DRINKING = 'StayHome_Drinking';
 
 export const CARD_AMOUNT = 4;
 export const PATH_IMG_CARD_BACK = './../../../../assets/card_';

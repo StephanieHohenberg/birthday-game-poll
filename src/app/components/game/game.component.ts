@@ -3,13 +3,11 @@ import {PartyAnimalService} from '../../services/party-animal.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {MatDialog} from '@angular/material/dialog';
-import {CATEGORIES, COOKIE_KEY} from '../../app.const';
-import {Card, Idea} from '../../models/rule.model';
+import {CATEGORIES, COOKIE_KEY_DRINKING, COOKIE_KEY_ID, COOKIE_KEY_NAME} from '../../app.const';
+import {Idea} from '../../models/rule.model';
 import {IdeaHttpService} from '../../services/idea-http.service';
 import {RegistrationDialogComponent} from '../dialogs/registration-dialog/registration-dialog.component';
-import {mapStringToUser, mapUsertoString, User} from '../../models/user.model';
-import {DisplayCardDialogComponent} from '../dialogs/display-card-dialog/display-card-dialog.component';
-import {DrinkingCommandDialogComponent} from '../dialogs/drinking-command-dialog/drinking-command-dialog.component';
+import {UserCookie} from '../../models/user.model';
 
 @Component({
   selector: 'app-game',
@@ -29,9 +27,9 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    if (this.partyAnimalService.isLoggedInUserGameMaster() === undefined
-        && !this.userCookieCouldBeFetched()) {
-      this.openRegistrationDialog();
+    if (this.loggedInUserId === undefined) {
+      const cookie = this.fetchCookie();
+      this.openRegistrationDialog(cookie);
     }
   }
 
@@ -47,26 +45,29 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
-  private openRegistrationDialog(): void {
-    const dialogRef = this.dialog.open(RegistrationDialogComponent, {width: '250px'});
+  private openRegistrationDialog(cookie: UserCookie): void {
+    this.loggedInUserId = cookie?.id;
+    const dialogRef = this.dialog.open(RegistrationDialogComponent, {
+      data: {name: cookie?.name, drinkingIndex: cookie?.drinkingIndex}
+    });
     dialogRef.afterClosed()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((result: {name, isDrinking}) => {
+      .subscribe((result: { name: string, drinkingIndex: number }) => {
         if (result === undefined) {
-          this.openRegistrationDialog();
+          this.openRegistrationDialog(cookie);
         } else {
           this.createUserAndFetchOtherUsers(result);
-          this.setCookie(result);
           this.fetchRules();
         }
       });
   }
 
-  private createUserAndFetchOtherUsers(result: {name, isDrinking}): void {
-    this.partyAnimalService.createUser(result.name, result.isDrinking)
+  private createUserAndFetchOtherUsers(result: { name: string, drinkingIndex: number }): void {
+    this.partyAnimalService.createUser(result.name, result.drinkingIndex > 0, this.loggedInUserId)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(animals => {
         this.loggedInUserId = this.partyAnimalService.getIdOfLoggedInUser();
+        this.setCookie(result.name, result.drinkingIndex, this.loggedInUserId);
         this.partyAnimals = [...animals];
       });
   }
@@ -87,21 +88,20 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
-  private setCookie(result: {name, isDrinking}): void {
-    const userString = mapUsertoString(result);
-    localStorage.setItem(COOKIE_KEY, userString);
+  private setCookie(name: string, drinkingIndex: number, userId: string): void {
+    localStorage.setItem(COOKIE_KEY_NAME, name);
+    localStorage.setItem(COOKIE_KEY_DRINKING, `${drinkingIndex}`);
+    localStorage.setItem(COOKIE_KEY_ID, userId);
   }
 
-  private userCookieCouldBeFetched(): boolean {
-    const userString = localStorage.getItem(COOKIE_KEY);
-    console.log(userString);
-    if (userString) {
-      this.createUserAndFetchOtherUsers(mapStringToUser(userString));
-      this.fetchRules();
-      return true;
-    } else {
-      return false;
+  private fetchCookie(): UserCookie {
+    if (localStorage.length > 1) {
+      const name = localStorage.getItem(COOKIE_KEY_NAME);
+      const drinkingIndex = localStorage.getItem(COOKIE_KEY_DRINKING) ? +localStorage.getItem(COOKIE_KEY_DRINKING) : undefined;
+      const userId = localStorage.getItem(COOKIE_KEY_ID);
+      return {name, drinkingIndex, id: userId};
     }
+    return undefined;
   }
 
 }

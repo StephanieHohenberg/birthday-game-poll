@@ -3,8 +3,8 @@ import {Observable} from 'rxjs';
 import {AngularFireDatabase, AngularFireList} from '@angular/fire/database';
 import {DB_GAME_MASTERS, DB_PARTY_ANIMALS} from '../db.routes';
 import {User} from '../models/user.model';
-import ThenableReference = firebase.database.ThenableReference;
 import * as uuid from 'uuid';
+import ThenableReference = firebase.database.ThenableReference;
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +15,16 @@ export class PartyAnimalService {
   public adminsRef: AngularFireList<User>;
   public loggedInUser: User;
   public loggedInUserRef: ThenableReference;
-  private admins: string[] = ['Stephie', 'Marco']; // TODO: in DB speichern?
+  private admins: string[] = ['Stephie', 'Marco', 'Sarah']; // TODO: in DB speichern?
 
   constructor(public db: AngularFireDatabase) {
     this.usersRef = this.db.list<User>(DB_PARTY_ANIMALS);
     this.adminsRef = this.db.list<User>(DB_GAME_MASTERS);
   }
 
-  public createUser(name: string, isDrinking: boolean): Observable<User[]> {
-    this.loggedInUser = {id: uuid.v4(), name, isDrinking};
+  public createUser(name: string, isDrinking: boolean, userId: string | undefined): Observable<User[]> {
+    const id = userId ? userId : uuid.v4();
+    this.loggedInUser = {id, name, isDrinking};
     this.loggedInUserRef = this.usersRef.push(this.loggedInUser);
     return this.usersRef.valueChanges();
   }
