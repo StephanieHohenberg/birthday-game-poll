@@ -23,7 +23,7 @@ export class PartyAnimalService {
   }
 
   public createUser(name: string, isDrinking: boolean, userId: string | undefined): Observable<User[]> {
-    const id = userId ? userId : uuid.v4();
+    const id = userId ? userId : name;
     this.loggedInUser = {id, name, isDrinking};
     this.loggedInUserRef = this.usersRef.push(this.loggedInUser);
     return this.usersRef.valueChanges();

@@ -21,6 +21,7 @@ export class AdminToolsComponent implements OnInit, OnDestroy {
   @Input() public partyAnimals: User[] = [];
   @Input() public isGameMaster = false;
   public isRandomizerRunning = false;
+  private partyAnimalsOfRound: User[] = [];
   private unsubscribe$ = new Subject();
 
   constructor(public gameSessionService: GameSessionService,
@@ -36,12 +37,21 @@ export class AdminToolsComponent implements OnInit, OnDestroy {
   }
 
   public startRandomizerAsAdmin(): void {
+    if (this.partyAnimalsOfRound.length === 0) { // TODO funkt nur, wenn nur ein Admin
+      this.partyAnimalsOfRound = [ ...this.partyAnimals];
+    }
+    console.log(this.partyAnimalsOfRound);
+
+
     this.isRandomizerRunning = true;
     const randomizerSecsTotal = RANDOMIZER_SECS * (Math.random() * 10 + 3);
     this.gameSessionService.createRandomizerNotification('');
-    const selectedIndex = Math.floor(Math.random() * this.partyAnimals.length);
+    const selectedIndex = Math.floor(Math.random() * this.partyAnimalsOfRound.length);
     setTimeout(() => {
-          const userId = this.partyAnimals[selectedIndex].id;
+          const userId = this.partyAnimalsOfRound[selectedIndex].id;
+          console.log(userId);
+          this.partyAnimalsOfRound.splice(selectedIndex, 1);
+          console.log(this.partyAnimalsOfRound);
           this.gameSessionService.createRandomizerNotification(userId);
           this.isRandomizerRunning = false;
         }, randomizerSecsTotal);
